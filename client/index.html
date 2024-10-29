@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.js" defer></script>
-  <title>The Haunted Trick or Treat Game!</title>
-</head>
-<body>
-  <div id="game-container" class="container">
-    <header class="header">
-      <h1>Welcome to Trick or Treat Game!</h1>
-      <p>Are you ready to go through the haunted advature?</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./app.js" defer></script>
+    <title>The Haunted Trick or Treat Game!</title>
+  </head>
+  <body>
+    <div id="game-container" class="container">
+      <header class="header">
+        <h1>Welcome to Trick or Treat Game!</h1>
+        <p>Are you ready to go through the haunted advature?</p>
+      </header>
 
-   <div id="stats-container" class="stats">
-   <h2>Stats</h2>
-   <p>Health: <span id="health">100</span></p>
-   <p>Candies: <span id="candies">0</span></p>
-   <p>Costume: <span id="costume">Potato</span></p>
-  </div>
+      <div id="stats-container" class="stats">
+        <h2>Stats</h2>
+        <p>Name: <span id="name">Bob</span></p>
+        <p>Health: <span id="health">100</span></p>
+        <p>Candies: <span id="candies">0</span></p>
+        <p>Costume: <span id="costume">Potato</span></p>
+      </div>
 
-  <section id="story-container" class="story">
-    <div id="story-text">
-      <p>Welcome to....</p>
+      <section id="story-container" class="story">
+        <div id="story-text">
+          <p>Welcome to....</p>
+        </div>
+      </section>
+
+      <section id="choices-container" class="choices">
+        <button id="aBtn" class="choice-btn">Choice 1</button>
+        <button id="bBtn" class="choice-btn">Choice 2</button>
+        <!-- <button class="choice-btn">Choice 3</button> -->
+      </section>
     </div>
-  </section>
-
-  <section id="choices-container" class="choices">
-    <button class="choice-btn">Choice 1</button>
-    <button class="choice-btn">Choice 2</button>
-    <button class="choice-btn">Choice 3</button>
-  </section>
-  </div>
-</body>
+  </body>
 </html>
