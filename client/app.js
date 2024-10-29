@@ -6,46 +6,83 @@ const choicesContainer = document.getElementById("choices-container");
 const healthElement = document.getElementById("health");
 const candiesElement = document.getElementById("candies");
 const costumeElement = document.getElementById("costume");
+const nameElement = document.getElementById("name");
 
+let costume = "";
+let characterName = "";
+let storyArray = [];
+let choicesArray = [];
+let currentCharacter = "";
 
+//Character creation function
+function characterCreation() {
+  characterName = prompt("What is your name?");
+  costume = prompt("What is your costume?");
 
-//function to load the story
-async function loadStory() {
-  const response = await fetch('http://localhost:8080/story');
+  console.log(characterName);
+  console.log(costume);
+}
+
+//function to fetch the story
+async function fetchStory() {
+  const response = await fetch("http://localhost:8080/story");
   const story = await response.json();
-  console.log(story);
+
+  for (let i = 0; i < story.length; i++) {
+    const storyPart = story[i].content;
+    storyArray.push(storyPart);
+  }
 
   //display story in the story-text container
-  storyText.innerHTML = ''; //clear the existing story
+  storyText.innerHTML = ""; //clear the existing story
   storyText.innerHTML = story.content;
 }
 
-//function to load character
-async function loadCharacter() {
-  const response = await fetch('http://localhost:8080/character');
-  const character = await response.json();
-
+//Load character values
+function loadCharacterValues(character) {
   //update stats
+  nameElement.textContent = character.name;
   healthElement.textContent = character.health;
   candiesElement.textContent = character.candies;
   costumeElement.textContent = character.costume;
 }
 
+//function to fetch character
+async function fetchCharacter() {
+  const response = await fetch("http://localhost:8080/character");
+  const characters = await response.json();
+
+  //Select current character
+  for (let i = 0; i < characters.length; i++) {
+    if (characters[i].name === characterName) {
+      currentCharacter = characters[i];
+    } else {
+      //TODO create new character entry
+    }
+  }
+
+  loadCharacterValues(currentCharacter);
+}
+
 //function to load enemy
 async function loadEnemy() {
-  const response = await fetch('http://localhost:8080/enemy');
+  const response = await fetch("http://localhost:8080/enemy");
   const enemy = await response.json();
-  console.log(enemy);
 }
 
-//function to load stories
+//function to load choices
 async function loadChoices() {
-  const response = await fetch('http://localhost:8080/choices');
+  const response = await fetch("http://localhost:8080/choices");
   const choices = await response.json();
-  console.log(choices);
+
+  for (let i = 0; i < choices.length; i++) {
+    const choice = choices[i];
+    choicesArray.push(choice);
+  }
 }
 
-
-
-
-
+loadChoices();
+loadEnemy();
+fetchCharacter();
+fetchStory();
+characterCreation();
