@@ -60,6 +60,15 @@ app.get("/story", async (_, response) => {
   response.send(story);
 });
 
+//Choices GET
+app.get("/choices", async (_, response) => {
+  const result = await db.query(`SELECT * FROM choices ORDER BY id`);
+
+  const choices = result.rows;
+
+  response.send(choices);
+});
+
 //Enemy GET
 app.get("/enemy", async (_, response) => {
   const result = await db.query(`SELECT * FROM enemy ORDER BY id`);
