@@ -16,12 +16,34 @@ let currentCharacter = "";
 
 //Character creation function
 function characterCreation() {
-  characterName = prompt("What is your name?");
-  costume = prompt("What is your costume?");
+  let prevCharacter = prompt("Do you have an existing character? Y/N?")
 
+  while (prevCharacter != "Y" && prevCharacter != "N") {
+    prevCharacter = prompt("Please enter Y or N")
+    console.log(prevCharacter);
+  }
+
+  if (prevCharacter === "Y") {
+    characterName = prompt("What is your name?")
+  }else {
+    characterName = prompt("What is your name?");
+    costume = prompt("What is your costume?");
+    newCharacter(characterName, costume);
+  }
+  
   console.log(characterName);
   console.log(costume);
 }
+
+//upload character to the database
+async function newCharacter(newName, costumeType) {
+  const character = {name:newName , costume:costumeType, candies:0, health:100}
+  const response = await fetch('http://localhost:8080/character', {
+  method: 'POST',
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(character)
+  })
+};
 
 //function to fetch the story
 async function fetchStory() {
