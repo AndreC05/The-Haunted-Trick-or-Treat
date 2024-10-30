@@ -8,7 +8,11 @@ const candiesElement = document.getElementById("candies");
 const costumeElement = document.getElementById("costume");
 const nameElement = document.getElementById("name");
 const startBtn = document.getElementById("startBtn");
+const aBtn = document.getElementById("aBtn");
+const bBtn = document.getElementById("bBtn");
+const storyTelling = document.getElementById("storyTelling");
 
+let storyindex = 0;
 let costume = "";
 let characterName = "";
 let storyArray = [];
@@ -38,7 +42,10 @@ async function newCharacter(newName, costumeType) {
     body: JSON.stringify(character),
   });
 }
-
+function storyDisplay(){
+  let storyContent = storyArray[storyindex];
+  storyTelling.textContent = storyContent;
+  }
 //function to fetch the story
 async function fetchStory() {
   const response = await fetch("http://localhost:8080/story");
@@ -48,10 +55,40 @@ async function fetchStory() {
     const storyPart = story[i].content;
     storyArray.push(storyPart);
   }
+  await storyDisplay();
+  // //display story in the story-text container
+  // storyText.innerHTML = ""; //clear the existing story
+  // 
+}
 
-  //display story in the story-text container
-  storyText.innerHTML = ""; //clear the existing story
-  storyText.innerHTML = story.content;
+//function to load choices
+async function loadChoices() {
+  const response = await fetch("http://localhost:8080/choices");
+  const choices = await response.json();
+
+  for (let i = 0; i < choices.length; i++) {
+    const choice = choices[i];
+    choicesArray.push(choice);
+  }
+  console.log(choicesArray);
+}
+
+//story logic
+//TODO view story content sections
+//TODO show story content according to choices logic
+
+//choices logic
+//aBtn.addEventListener("click", )
+
+
+function handleaBtn(){
+  //add story.content 
+}
+
+//function to load enemy
+async function loadEnemy() {
+  const response = await fetch("http://localhost:8080/enemy");
+  const enemy = await response.json();
 }
 
 //Load character values
