@@ -25,24 +25,28 @@ function characterCreation() {
   }
 
   if (prevCharacter === "Y") {
-    characterName = prompt("What is your name?")
-  }else {
+    characterName = prompt("What is your name?");
+  } else {
     characterName = prompt("What is your name?");
     costume = prompt("What is your costume?");
     newCharacter(characterName, costume);
   }
-  
-};
+}
 
 //upload character to the database
 async function newCharacter(newName, costumeType) {
-  const character = {name:newName , costume:costumeType, candies:0, health:100}
-  const response = await fetch('http://localhost:8080/character', {
-  method: 'POST',
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(character)
-  })
-};
+  const character = {
+    name: newName,
+    costume: costumeType,
+    candies: 0,
+    health: 100,
+  };
+  const response = await fetch("http://localhost:8080/character", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(character),
+  });
+}
 
 //function to fetch the story
 async function fetchStory() {
@@ -57,7 +61,7 @@ async function fetchStory() {
   //display story in the story-text container
   storyText.innerHTML = ""; //clear the existing story
   storyText.innerHTML = story.content;
-};
+}
 
 //Load character values
 function loadCharacterValues(character) {
@@ -66,32 +70,42 @@ function loadCharacterValues(character) {
   healthElement.textContent = character.health;
   candiesElement.textContent = character.candies;
   costumeElement.textContent = character.costume;
-};
+}
 
 //function to fetch character
 async function fetchCharacter() {
-  const response = await fetch("http://localhost:8080/character");
-  const characters = await response.json();
-  while (loadedCharacter != true) {
-    //Select current character
-    console.log("character name: ", characterName)
-  for (let i = 0; i < characters.length; i++) {
-    if (characters[i].name === characterName) {
-      currentCharacter = characters[i];
-      loadedCharacter = true;
-    } else {
-      characterCreation()
+  let characterFound = false;
+  characterName = prompt("Please Enter Your Character Name.");
+  while (characterFound == false) {
+    const response = await fetch("http://localhost:8080/character");
+    const characters = await response.json();
+    for (let i = 0; i < characters.length; i++) {
+      if (characters[i].name === characterName) {
+        currentCharacter = characters[i];
+        characterFound = true;
+        break;
+      }
+    }
+    if (characterFound == false) {
+      const newCharacterChoice = prompt(
+        "character not found would you like to make a new character Y/N?"
+      );
+      if (newCharacterChoice === "Y") {
+        characterCreation();
+        continue;
+      } else {
+        characterName = promt("please reenter your character name.");
+      }
     }
   }
-}
   loadCharacterValues(currentCharacter);
-};
+}
 
 //function to load enemy
 async function loadEnemy() {
   const response = await fetch("http://localhost:8080/enemy");
   const enemy = await response.json();
-};
+}
 
 //function to load choices
 async function loadChoices() {
@@ -102,10 +116,10 @@ async function loadChoices() {
     const choice = choices[i];
     choicesArray.push(choice);
   }
-};
+}
 
 loadChoices();
 loadEnemy();
 fetchStory();
 
-startBtn.addEventListener("click", fetchCharacter)
+startBtn.addEventListener("click", fetchCharacter);
