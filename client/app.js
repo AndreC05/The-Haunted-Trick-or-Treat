@@ -22,8 +22,7 @@ let loadedCharacter = false;
 
 //Character creation function
 function characterCreation() {
-  let prevCharacter = alert("Boo");
-
+  alert("Boo");
   characterName = prompt("What is your name?");
   costume = prompt("What is your costume?");
   newCharacter(characterName, costume);
@@ -127,6 +126,45 @@ async function fetchCharacter() {
       }
     }
   }
+  loadCharacterValues(currentCharacter);
+}
+
+//function to load enemy
+async function loadEnemy() {
+  const response = await fetch("http://localhost:8080/enemy");
+  const enemy = await response.json();
+}
+
+//function to load choices
+async function loadChoices() {
+  const response = await fetch("http://localhost:8080/choices");
+  const choices = await response.json();
+
+  for (let i = 0; i < choices.length; i++) {
+    const choice = choices[i];
+    choicesArray.push(choice);
+  }
+}
+
+//update candy value on the database
+async function handleUpdate() {
+  let characterId = currentCharacter.id;
+  let characterCandies = currentCharacter.candies;
+  let characterHealth = currentCharacter.health;
+
+  const body = {
+    id: characterId,
+    candies: characterCandies,
+    health: characterHealth,
+  };
+
+  //make put request
+  const response = await fetch("http://localhost:8080/character", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
   loadCharacterValues(currentCharacter);
 }
 
