@@ -8,12 +8,14 @@
     <title>The Haunted Trick or Treat Game!</title>
   </head>
   <body>
-    <div id="game-container" class="container">
-      <header class="header">
+    <header class="header">
+      <div id="game-container" class="container">
         <h1>Welcome to Trick or Treat Game!</h1>
-        <p>Are you ready to go through the haunted advature?</p>
-      </header>
+        <p>Are you ready to go through the haunted adventure?</p>
+      </div>
+    </header>
 
+    <main>
       <div id="stats-container" class="stats">
         <h2>Stats</h2>
         <p>Name: <span id="name">Bob</span></p>
@@ -24,7 +26,7 @@
 
       <section id="story-container" class="story">
         <div id="story-text">
-          <p>Welcome to....</p>
+          <p id="storyTelling">Welcome to....</p>
         </div>
       </section>
 
@@ -33,6 +35,6 @@
         <button id="bBtn" class="choice-btn">Choice 2</button>
         <button id="startBtn">Start</button>
       </section>
-    </div>
+    </main>
   </body>
 </html>
