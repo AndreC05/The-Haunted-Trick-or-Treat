@@ -44,7 +44,7 @@ app.post("/character", async (request, response) => {
 
 //character PUT
 app.put("/character", async (request, response) => {
-  const { id, candies, health } = request;
+  const { id, candies, health } = request.body;
   const update = await db.query(
     `UPDATE character SET candies = ${candies}, health = ${health} WHERE id = ${id} `
   );
