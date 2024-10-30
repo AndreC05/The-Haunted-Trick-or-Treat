@@ -20,17 +20,9 @@ let loadedCharacter = false;
 function characterCreation() {
   let prevCharacter = alert("Boo");
 
-  while (prevCharacter != "Y" && prevCharacter != "N") {
-    prevCharacter = prompt("Do you have a character, Please enter Y or N");
-  }
-
-  if (prevCharacter === "Y") {
-    characterName = prompt("What is your name?");
-  } else {
-    characterName = prompt("What is your name?");
-    costume = prompt("What is your costume?");
-    newCharacter(characterName, costume);
-  }
+  characterName = prompt("What is your name?");
+  costume = prompt("What is your costume?");
+  newCharacter(characterName, costume);
 }
 
 //upload character to the database
@@ -91,7 +83,7 @@ async function fetchCharacter() {
         "character not found would you like to make a new character Y/N?"
       );
       if (newCharacterChoice === "Y") {
-        characterCreation();
+        await characterCreation();
         continue;
       } else {
         characterName = promt("please reenter your character name.");
