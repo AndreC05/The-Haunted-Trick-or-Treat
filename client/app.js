@@ -7,20 +7,21 @@ const healthElement = document.getElementById("health");
 const candiesElement = document.getElementById("candies");
 const costumeElement = document.getElementById("costume");
 const nameElement = document.getElementById("name");
+const startBtn = document.getElementById("startBtn");
 
 let costume = "";
 let characterName = "";
 let storyArray = [];
 let choicesArray = [];
 let currentCharacter = "";
+let loadedCharacter = false;
 
 //Character creation function
 function characterCreation() {
-  let prevCharacter = prompt("Do you have an existing character? Y/N?")
+  let prevCharacter = alert("Boo");
 
   while (prevCharacter != "Y" && prevCharacter != "N") {
-    prevCharacter = prompt("Please enter Y or N")
-    console.log(prevCharacter);
+    prevCharacter = prompt("Do you have a character, Please enter Y or N");
   }
 
   if (prevCharacter === "Y") {
@@ -31,9 +32,7 @@ function characterCreation() {
     newCharacter(characterName, costume);
   }
   
-  console.log(characterName);
-  console.log(costume);
-}
+};
 
 //upload character to the database
 async function newCharacter(newName, costumeType) {
@@ -58,7 +57,7 @@ async function fetchStory() {
   //display story in the story-text container
   storyText.innerHTML = ""; //clear the existing story
   storyText.innerHTML = story.content;
-}
+};
 
 //Load character values
 function loadCharacterValues(character) {
@@ -67,30 +66,32 @@ function loadCharacterValues(character) {
   healthElement.textContent = character.health;
   candiesElement.textContent = character.candies;
   costumeElement.textContent = character.costume;
-}
+};
 
 //function to fetch character
 async function fetchCharacter() {
   const response = await fetch("http://localhost:8080/character");
   const characters = await response.json();
-
-  //Select current character
+  while (loadedCharacter != true) {
+    //Select current character
+    console.log("character name: ", characterName)
   for (let i = 0; i < characters.length; i++) {
     if (characters[i].name === characterName) {
       currentCharacter = characters[i];
+      loadedCharacter = true;
     } else {
-      //TODO create new character entry
+      characterCreation()
     }
   }
-
-  loadCharacterValues(currentCharacter);
 }
+  loadCharacterValues(currentCharacter);
+};
 
 //function to load enemy
 async function loadEnemy() {
   const response = await fetch("http://localhost:8080/enemy");
   const enemy = await response.json();
-}
+};
 
 //function to load choices
 async function loadChoices() {
@@ -101,10 +102,10 @@ async function loadChoices() {
     const choice = choices[i];
     choicesArray.push(choice);
   }
-}
+};
 
 loadChoices();
 loadEnemy();
-fetchCharacter();
 fetchStory();
-characterCreation();
+
+startBtn.addEventListener("click", fetchCharacter)
