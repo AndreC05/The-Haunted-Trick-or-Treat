@@ -8,7 +8,10 @@ const candiesElement = document.getElementById("candies");
 const costumeElement = document.getElementById("costume");
 const nameElement = document.getElementById("name");
 const startBtn = document.getElementById("startBtn");
+const aBtn = document.getElementById("aBtn");
+const bBtn = document.getElementById("bBtn");
 
+let storyindex = 0;
 let costume = "";
 let characterName = "";
 let storyArray = [];
@@ -50,9 +53,29 @@ async function fetchStory() {
     storyArray.push(storyPart);
   }
 
-  //display story in the story-text container
-  storyText.innerHTML = ""; //clear the existing story
-  storyText.innerHTML = story.content;
+  // //display story in the story-text container
+  // storyText.innerHTML = ""; //clear the existing story
+  // storyText.innerHTML = story.content;
+}
+
+//function to load choices
+async function loadChoices() {
+  const response = await fetch("http://localhost:8080/choices");
+  const choices = await response.json();
+
+  for (let i = 0; i < choices.length; i++) {
+    const choice = choices[i];
+    choicesArray.push(choice);
+  }
+  console.log(choicesArray);
+}
+
+//choices
+
+//function to load enemy
+async function loadEnemy() {
+  const response = await fetch("http://localhost:8080/enemy");
+  const enemy = await response.json();
 }
 
 //Load character values
@@ -91,23 +114,6 @@ async function fetchCharacter() {
     }
   }
   loadCharacterValues(currentCharacter);
-}
-
-//function to load enemy
-async function loadEnemy() {
-  const response = await fetch("http://localhost:8080/enemy");
-  const enemy = await response.json();
-}
-
-//function to load choices
-async function loadChoices() {
-  const response = await fetch("http://localhost:8080/choices");
-  const choices = await response.json();
-
-  for (let i = 0; i < choices.length; i++) {
-    const choice = choices[i];
-    choicesArray.push(choice);
-  }
 }
 
 loadChoices();
