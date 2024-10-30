@@ -12,7 +12,7 @@ const aBtn = document.getElementById("aBtn");
 const bBtn = document.getElementById("bBtn");
 const storyTelling = document.getElementById("storyTelling");
 
-let storyindex = 0;
+let storyindex = 1;
 let costume = "";
 let characterName = "";
 let storyArray = [];
@@ -56,10 +56,27 @@ async function fetchStory() {
     storyArray.push(storyPart);
   }
   await storyDisplay();
-  // //display story in the story-text container
-  // storyText.innerHTML = ""; //clear the existing story
-  // 
+  
+  displayChoices(); 
 }
+
+//update story index
+
+function updateStoryindex(number) {
+  storyindex = storyindex + number;
+}
+//display choices
+function displayChoices() {
+  for (let i = 0; i < choicesArray.length; i++) {
+    if (choicesArray[i].story_id == storyindex + 1) {
+      if (choicesArray[i].ab === "A") {
+        aBtn.textContent = choicesArray[i].options;
+      }else {
+        bBtn.textContent = choicesArray[i].options;
+      }
+    }
+  }
+};
 
 //function to load choices
 async function loadChoices() {
@@ -83,12 +100,6 @@ async function loadChoices() {
 
 function handleaBtn(){
   //add story.content 
-}
-
-//function to load enemy
-async function loadEnemy() {
-  const response = await fetch("http://localhost:8080/enemy");
-  const enemy = await response.json();
 }
 
 //Load character values
@@ -135,17 +146,6 @@ async function loadEnemy() {
   const enemy = await response.json();
 }
 
-//function to load choices
-async function loadChoices() {
-  const response = await fetch("http://localhost:8080/choices");
-  const choices = await response.json();
-
-  for (let i = 0; i < choices.length; i++) {
-    const choice = choices[i];
-    choicesArray.push(choice);
-  }
-}
-
 //update candy value on the database
 async function handleUpdate() {
   let characterId = currentCharacter.id;
@@ -169,7 +169,7 @@ async function handleUpdate() {
 }
 
 loadChoices();
-loadEnemy();
+// loadEnemy();
 fetchStory();
 
 startBtn.addEventListener("click", fetchCharacter);
