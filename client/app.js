@@ -20,6 +20,12 @@ let storyArray = [];
 let choicesArray = [];
 let currentCharacter = "";
 
+//Play click sound
+function playClickSound() {
+  const click = new Audio("/assets/sounds/btn-click.mp3");
+  click.play();
+}
+
 //Character creation function
 function characterCreation() {
   alert("Boo");
@@ -56,16 +62,11 @@ async function fetchStory() {
     const storyPart = story[i].content;
     storyArray.push(storyPart);
   }
+  await loadChoices();
   await storyDisplay();
 
   displayChoices();
 }
-
-//update story index
-
-// function updateStoryindex(number) {
-//   storyindex = storyindex + number;
-// }
 
 //display choices
 function displayChoices() {
@@ -86,45 +87,62 @@ async function loadChoices() {
   const choices = await response.json();
 
   for (let i = 0; i < choices.length; i++) {
-    const choice = choices[i];
+    const choice = await choices[i];
     choicesArray.push(choice);
   }
-  console.log(choicesArray);
 }
-
-//story logic
-//TODO view story content sections
-//TODO show story content according to choices logic
-
-//choices logic
-//aBtn.addEventListener("click", )
 
 function handleaBtn() {
-  console.log(storyindex);
-  for (let i = 0; i < choicesArray.length; i++) {
-    if (choicesArray[i].story_id == storyId) {
-      if (choicesArray[i].ab == "A") {
-        console.log(choicesArray[i].next_story_id);
-        storyindex = choicesArray[i].next_story_id - 1;
-        storyDisplay();
-        displayChoices();
+  playClickSound();
+  //make sure start button is pressed
+  if (currentCharacter != "") {
+    for (let i = 0; i < choicesArray.length; i++) {
+      if (choicesArray[i].story_id == storyindex + 1) {
+        if (choicesArray[i].ab == "A") {
+          console.log(choicesArray[i].next_story_id);
+          storyindex = choicesArray[i].next_story_id - 1;
+          storyDisplay();
+          displayChoices();
+          if (choicesArray[i].danger == "Y") {
+            loseHealth();
+            break;
+          } else if (choicesArray[i].candy == "Y") {
+            gainCandies(3);
+            break;
+          }
+          break;
+        }
       }
     }
+  } else {
+    alert("Please press the start button to start your haunted adventure!!");
   }
 }
-//   //logic for button A (aBtn), if story_id == 1 then + 1, else + ++
 
 function handlebBtn() {
-  console.log("b Button clicked");
-  for (let i = 0; i < choicesArray.length; i++) {
-    if (choicesArray[i].story_id == storyId) {
-      if (choicesArray[i].ab == "B") {
-        console.log(choicesArray[i].next_story_id);
-        storyindex = choicesArray[i].next_story_id - 1;
-        storyDisplay();
-        displayChoices();
+  playClickSound();
+  //make sure start button is pressed
+  if (currentCharacter != "") {
+    for (let i = 0; i < choicesArray.length; i++) {
+      if (choicesArray[i].story_id == storyindex + 1) {
+        if (choicesArray[i].ab == "B") {
+          console.log(choicesArray[i].next_story_id);
+          storyindex = choicesArray[i].next_story_id - 1;
+          storyDisplay();
+          displayChoices();
+          if (choicesArray[i].danger == "Y") {
+            loseHealth();
+            break;
+          } else if (choicesArray[i].candy == "Y") {
+            gainCandies(3);
+            break;
+          }
+          break;
+        }
       }
     }
+  } else {
+    alert("Please press the start button to start your haunted adventure!!");
   }
 }
 
@@ -135,6 +153,28 @@ function loadCharacterValues(character) {
   healthElement.textContent = character.health;
   candiesElement.textContent = character.candies;
   costumeElement.textContent = character.costume;
+}
+
+//Reset character values
+function resetCharacterDisplay() {
+  nameElement.textContent = "";
+  healthElement.textContent = "";
+  candiesElement.textContent = "";
+  costumeElement.textContent = "";
+}
+
+//lose health
+function loseHealth() {
+  currentCharacter.health = currentCharacter.health - 30;
+  handleUpdate();
+  loadCharacterValues(currentCharacter);
+}
+
+//gain Candies
+function gainCandies(candies) {
+  currentCharacter.candies = currentCharacter.candies + candies;
+  handleUpdate();
+  loadCharacterValues(currentCharacter);
 }
 
 //function to fetch character
@@ -166,12 +206,6 @@ async function fetchCharacter() {
   loadCharacterValues(currentCharacter);
 }
 
-//function to load enemy
-async function loadEnemy() {
-  const response = await fetch("http://localhost:8080/enemy");
-  const enemy = await response.json();
-}
-
 //update candy value on the database
 async function handleUpdate() {
   let characterId = currentCharacter.id;
@@ -194,10 +228,9 @@ async function handleUpdate() {
   loadCharacterValues(currentCharacter);
 }
 
-loadChoices();
-// loadEnemy();
+//Start functions and event listeners
 fetchStory();
-
+resetCharacterDisplay();
 startBtn.addEventListener("click", fetchCharacter);
 aBtn.addEventListener("click", handleaBtn);
 bBtn.addEventListener("click", handlebBtn);
