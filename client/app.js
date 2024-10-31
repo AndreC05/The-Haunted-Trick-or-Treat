@@ -23,7 +23,16 @@ let currentCharacter = "";
 //Play click sound
 function playClickSound() {
   const click = new Audio("/assets/sounds/btn-click.mp3");
+  click.volume = 0.15;
   click.play();
+}
+
+//Play background music
+function playMusic() {
+  const music = new Audio("/assets/sounds/background-music.mp3");
+  music.loop = true;
+  music.volume = 0.5;
+  music.play();
 }
 
 //Character creation function
@@ -232,5 +241,6 @@ async function handleUpdate() {
 fetchStory();
 resetCharacterDisplay();
 startBtn.addEventListener("click", fetchCharacter);
+startBtn.addEventListener("click", playMusic);
 aBtn.addEventListener("click", handleaBtn);
 bBtn.addEventListener("click", handlebBtn);
