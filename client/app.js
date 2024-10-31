@@ -18,7 +18,6 @@ let characterName = "";
 let storyArray = [];
 let choicesArray = [];
 let currentCharacter = "";
-let loadedCharacter = false;
 
 //Character creation function
 function characterCreation() {
@@ -62,9 +61,10 @@ async function fetchStory() {
 
 //update story index
 
-function updateStoryindex(number) {
-  storyindex = storyindex + number;
-}
+// function updateStoryindex(number) {
+//   storyindex = storyindex + number;
+// }
+
 //display choices
 function displayChoices() {
   for (let i = 0; i < choicesArray.length; i++) {
@@ -98,9 +98,20 @@ async function loadChoices() {
 //aBtn.addEventListener("click", )
 
 
-function handleaBtn(){
-  //add story.content 
+function handleaBtn() {
+  console.log("a Button clicked");
+  for (let i = 0; i < choicesArray.length; i++) {
+    
+    if (choicesArray[i].story_id == storyindex) {
+      if (choicesArray[i].ab == "A") {
+        console.log(choicesArray[i].next_story_id);
+        storyindex = choicesArray[i].next_story_id;
+      }
+    }
+  }
 }
+//   //logic for button A (aBtn), if story_id == 1 then + 1, else + ++
+
 
 //Load character values
 function loadCharacterValues(character) {
@@ -173,3 +184,4 @@ loadChoices();
 fetchStory();
 
 startBtn.addEventListener("click", fetchCharacter);
+aBtn.addEventListener("click", handleaBtn);
