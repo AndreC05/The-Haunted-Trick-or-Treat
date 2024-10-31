@@ -12,7 +12,8 @@ const aBtn = document.getElementById("aBtn");
 const bBtn = document.getElementById("bBtn");
 const storyTelling = document.getElementById("storyTelling");
 
-let storyindex = 1;
+let storyindex = 0;
+let storyId = storyindex + 1;
 let costume = "";
 let characterName = "";
 let storyArray = [];
@@ -41,10 +42,11 @@ async function newCharacter(newName, costumeType) {
     body: JSON.stringify(character),
   });
 }
-function storyDisplay(){
+function storyDisplay() {
   let storyContent = storyArray[storyindex];
   storyTelling.textContent = storyContent;
-  }
+  console.log(storyArray, storyindex);
+}
 //function to fetch the story
 async function fetchStory() {
   const response = await fetch("http://localhost:8080/story");
@@ -55,8 +57,8 @@ async function fetchStory() {
     storyArray.push(storyPart);
   }
   await storyDisplay();
-  
-  displayChoices(); 
+
+  displayChoices();
 }
 
 //update story index
@@ -71,12 +73,12 @@ function displayChoices() {
     if (choicesArray[i].story_id == storyindex + 1) {
       if (choicesArray[i].ab === "A") {
         aBtn.textContent = choicesArray[i].options;
-      }else {
+      } else {
         bBtn.textContent = choicesArray[i].options;
       }
     }
   }
-};
+}
 
 //function to load choices
 async function loadChoices() {
@@ -97,21 +99,34 @@ async function loadChoices() {
 //choices logic
 //aBtn.addEventListener("click", )
 
-
 function handleaBtn() {
-  console.log("a Button clicked");
+  console.log(storyindex);
   for (let i = 0; i < choicesArray.length; i++) {
-    
-    if (choicesArray[i].story_id == storyindex) {
+    if (choicesArray[i].story_id == storyId) {
       if (choicesArray[i].ab == "A") {
         console.log(choicesArray[i].next_story_id);
-        storyindex = choicesArray[i].next_story_id;
+        storyindex = choicesArray[i].next_story_id - 1;
+        storyDisplay();
+        displayChoices();
       }
     }
   }
 }
 //   //logic for button A (aBtn), if story_id == 1 then + 1, else + ++
 
+function handlebBtn() {
+  console.log("b Button clicked");
+  for (let i = 0; i < choicesArray.length; i++) {
+    if (choicesArray[i].story_id == storyId) {
+      if (choicesArray[i].ab == "B") {
+        console.log(choicesArray[i].next_story_id);
+        storyindex = choicesArray[i].next_story_id - 1;
+        storyDisplay();
+        displayChoices();
+      }
+    }
+  }
+}
 
 //Load character values
 function loadCharacterValues(character) {
@@ -185,3 +200,4 @@ fetchStory();
 
 startBtn.addEventListener("click", fetchCharacter);
 aBtn.addEventListener("click", handleaBtn);
+bBtn.addEventListener("click", handlebBtn);
