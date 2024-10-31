@@ -62,7 +62,7 @@ app.get("/story", async (_, response) => {
 
 //Choices GET
 app.get("/choices", async (_, response) => {
-  const result = await db.query(`SELECT * FROM choices ORDER BY id`);
+  const result = await db.query(`SELECT * FROM choices JOIN story on story.id = choices.story_id ORDER BY choices.id`);
 
   const choices = result.rows;
 
