@@ -51,11 +51,14 @@ async function newCharacter(newName, costumeType) {
     candies: 0,
     health: 100,
   };
-  const response = await fetch("http://localhost:8080/character", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(character),
-  });
+  const response = await fetch(
+    "https://the-haunted-trick-or-treat.onrender.com/character",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(character),
+    }
+  );
 }
 function storyDisplay() {
   let storyContent = storyArray[storyindex];
@@ -64,7 +67,9 @@ function storyDisplay() {
 }
 //function to fetch the story
 async function fetchStory() {
-  const response = await fetch("http://localhost:8080/story");
+  const response = await fetch(
+    "https://the-haunted-trick-or-treat.onrender.com/story"
+  );
   const story = await response.json();
 
   for (let i = 0; i < story.length; i++) {
@@ -92,7 +97,9 @@ function displayChoices() {
 
 //function to load choices
 async function loadChoices() {
-  const response = await fetch("http://localhost:8080/choices");
+  const response = await fetch(
+    "https://the-haunted-trick-or-treat.onrender.com/choices"
+  );
   const choices = await response.json();
 
   for (let i = 0; i < choices.length; i++) {
@@ -191,7 +198,9 @@ async function fetchCharacter() {
   let characterFound = false;
   characterName = prompt("Please Enter Your Character Name.");
   while (characterFound == false) {
-    const response = await fetch("http://localhost:8080/character");
+    const response = await fetch(
+      "https://the-haunted-trick-or-treat.onrender.com/character"
+    );
     const characters = await response.json();
     for (let i = 0; i < characters.length; i++) {
       if (characters[i].name === characterName) {
@@ -228,11 +237,14 @@ async function handleUpdate() {
   };
 
   //make put request
-  const response = await fetch("http://localhost:8080/character", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    "https://the-haunted-trick-or-treat.onrender.com/character",
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }
+  );
 
   loadCharacterValues(currentCharacter);
 }
